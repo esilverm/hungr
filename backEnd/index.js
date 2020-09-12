@@ -12,29 +12,34 @@ server.listen(3001, () => {
   console.log("Server running on port 3001");
 });
 
-app.get("/restaurants",(request, response) => {
+app.get("/restaurants", (request, response) => {
   const deviceId = request.query.deviceId;
-  const sql = `SELECT * FROM restaurants 
-      inner join 
-      (select devices.deviceid,
-      relationships.restaurantid,
-       relationships.isLiked 
-        from devices 
-        inner join relationships 
-        on relationships.device = devices.id 
-        where devices.deviceid = (?)) 
-        as output 
-        on restaurants.id = output.restaurantid;`
+  const sql = `SELECT
+  restaurants.name,
+  restaurants.addressOne,
+  restaurants.addressTwo,
+  restaurants.city,
+  restaurants.state,
+  restaurants.zipcode
+  FROM restaurants INNER JOIN 
+  (SELECT devices.deviceid, 
+    relationships.restaurantid, 
+    relationships.isLiked 
+    FROM devices 
+    INNER JOIN relationships
+    ON relationships.device=devices.id
+    WHERE devices.deviceid=(?)) 
+    AS output
+    ON restaurants.id=output.restaurantid;`;
+
   console.log(deviceId);
-  db.all(sql,[deviceId],(err,row)=>{
-    if(err){
+  db.all(sql, [deviceId], (err, row) => {
+    if (err) {
       console.log(err);
     } else {
       console.log(row);
       return response.json(row);
     }
-  })
+  });
   //return response.json({message: deviceId});
 });
-
-
