@@ -12,23 +12,23 @@ server.listen(3001, () => {
   console.log("Server running on port 3001");
 });
 
+
 app.get("/restaurants", (request, response) => {
   const deviceId = request.query.deviceId;
   const sql = `SELECT
   restaurants.name,
-  restaurants.addressOne,
-  restaurants.addressTwo,
+  restaurants.address,
   restaurants.city,
   restaurants.state,
   restaurants.zipcode
   FROM restaurants INNER JOIN 
-  (SELECT devices.deviceid, 
+  (SELECT devices.device_id, 
     relationships.restaurantid, 
-    relationships.isLiked 
+    relationships.leftOrRight 
     FROM devices 
     INNER JOIN relationships
-    ON relationships.device=devices.id
-    WHERE devices.deviceid=(?)) 
+    ON relationships.deviceid=devices.device_id
+    WHERE devices.device_id=(?)) 
     AS output
     ON restaurants.id=output.restaurantid;`;
 
@@ -41,5 +41,4 @@ app.get("/restaurants", (request, response) => {
       return response.json(row);
     }
   });
-  //return response.json({message: deviceId});
 });

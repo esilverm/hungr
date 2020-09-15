@@ -1,37 +1,38 @@
-const sql3 = require("sqlite3").verbose();
-let db = new sql3.Database("./hungr.db", (error) => {
-  if (error) {
-    console.log(error);
+
+
+const sqlite3 = require("sqlite3").verbose();
+let db = new sqlite3.Database("./hungr.db", (err) => {
+  if (err) {
+    console.log(err);
   } else {
-    console.log("Connected to database");
+    console.log("Connected to database.");
+    db.run(`CREATE TABLE 
+    IF NOT EXISTS devices 
+    (device_id text primary key)`);
+
     db.run(
-      `CREATE TABLE IF NOT EXISTS devices(
-        id integer primary key autoincrement,
-        deviceid text
-        )`
+      `CREATE TABLE 
+      IF NOT EXISTS restaurants 
+       (id integer 
+        primary key autoincrement, 
+        name text, 
+        address text, 
+        city text, 
+        state text, 
+        zipcode text)`
+
     );
     db.run(
-      `CREATE TABLE IF NOT EXISTS restaurants(
-        id integer primary key autoincrement,
-        name text,
-        addressOne text,
-        addressTwo text,
-        city text,
-        state text,
-        zipcode text  
-      )`
-    );
-    db.run(
-      `CREATE TABLE IF NOT EXISTS relationships(
-        id integer primary key autoincrement,
-        device integer,
-        restaurantid integer,
-        isLiked text,
-        foreign key (device) references devices (id),
-        foreign key (restaurantid) references restaurants (id)
-      )`
+      `CREATE TABLE 
+      IF NOT EXISTS relationships 
+      (id integer primary key autoincrement, 
+        deviceid integer, 
+        restaurantid integer, 
+        leftOrRight text, 
+        foreign key (deviceid) references devices (id), 
+        foreign key (restaurantid) references restaurants (id), 
+        check(leftOrRight = "left" OR leftOrRight = "right"))`
     );
   }
 });
-
 module.exports = db;
