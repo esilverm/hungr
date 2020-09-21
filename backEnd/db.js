@@ -5,12 +5,12 @@ let db = new sqlite3.Database("./hungr.db", (err) => {
   } else {
     console.log("Connected to database.");
     db.run(
-      `create table if not exists devices (
-        device_id text primary key)`
+      `CREATE TABLE IF NOT EXISTS devices (
+        device_id text PRIMARY KEY)`
     );
     db.run(
-      `create table if not exists restaurants (
-        id integer primary key autoincrement, 
+      `CREATE TABLE IF NOT EXISTS restaurants (
+        id integer PRIMARY KEY AUTOINCREMENT, 
         name text, 
         address text, 
         city text, 
@@ -18,12 +18,12 @@ let db = new sqlite3.Database("./hungr.db", (err) => {
         zipcode text)`
     );
     db.run(
-      `create table if not exists swipes (
+      `CREATE TABLE IF NOT EXISTS swipes (
         device_id integer, 
         restaurant_id integer,
-        foreign key (device_id) references devices (device_id), 
-        foreign key (restaurant_id) references restaurants (id),
-        primary key (device_id, restaurant_id))`
+        FOREIGN KEY (device_id) REFERENCES devices (device_id), 
+        FOREIGN KEY (restaurant_id) REFERENCES restaurants (id),
+        PRIMARY KEY (device_id, restaurant_id))`
     );
   }
 });
