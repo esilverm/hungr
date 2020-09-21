@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/restaurants", (request, response) => {
-  const deviceID = request.query.device;
+  const deviceID = request.query.deviceID;
   const sql = `SELECT 
   * from SWIPES INNER JOIN 
   restaurants ON 
