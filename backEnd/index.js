@@ -10,8 +10,8 @@ const server = http.createServer(app);
 app.use(express.json());
 app.use(cors());
 
-app.get("/restaurants", (request, response) => {
-  const deviceID = request.query.device;
+app.get("/restaurants/:id", (request, response) => {
+  const deviceID = request.params.id;
   const sql = `SELECT 
   * from SWIPES INNER JOIN 
   restaurants ON 
@@ -121,12 +121,21 @@ app.post("/swiped", (req, res) => {
 app.post("/device", (req, res) => {
   try {
     const { deviceID } = req.body;
-    const newRelationship = db.run(
-      `INSERT INTO devices (device_id) VALUES (${deviceID})`
-    );
-    res.json("device: " + deviceID);
+    const insertDevice = `INSERT INTO devices (device_id) VALUES (?)`;
+    db.run(insertDevice, [deviceID], (err) => {
+      if (err) {
+        return res.status(400).json({
+          message: err.message,
+        });
+      }
+      return res.status(201).json({
+        message: "Created successful!",
+      });
+    });
   } catch (err) {
-    console.error(err);
+    return res.status(400).json({
+      message: err.message,
+    });
   }
 });
 
