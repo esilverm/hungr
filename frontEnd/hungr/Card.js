@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { isRequired } from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedColorPropType';
 
-const Card = () => {
-  return(
+class Card extends Component {
+  render(){
+    return(
     <View style={styles.Card}>
       <Image source = {require("./assets/chipotle.jpg")} style={styles.Image}/>
       <View style={styles.Text}>
@@ -21,7 +22,8 @@ const Card = () => {
         </Text>
       </View>
     </View>
-  )
+    )
+  }
 }
 
 const styles = StyleSheet.create({

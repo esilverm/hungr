@@ -4,6 +4,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import Card from './Card';
 import RestaurantView from './RestaurantView';
 import * as Location from 'expo-location';
+import {
+  FlingGestureHandler,
+  Directions,
+  State,
+} from 'react-native-gesture-handler';
 
 export default function App() {
   const [location, setLocation] = useState(null);
@@ -24,8 +29,16 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>{JSON.stringify(location)}</Text>
-      {/*<Card/>*/}
-      <RestaurantView />
+      <FlingGestureHandler
+          direction={Directions.RIGHT | Directions.LEFT}
+          onHandlerStateChange={({ nativeEvent }) => {
+            if (nativeEvent.state === State.ACTIVE) {
+              Alert.alert("I'm flinged!");
+            }
+          }}>
+          <Card/>
+      </FlingGestureHandler>
+      {/*<RestaurantView />*/}
       <StatusBar style="auto" />
     </View>
   );
