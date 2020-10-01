@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Card from './Card';
-import RestaurantView from './RestaurantView';
+import { StyleSheet, Text, View,  TouchableOpacity, Alert } from 'react-native';
+import Card from './src/components/Card';
+import RestaurantView from './src/components/RestaurantView';
 import * as Location from 'expo-location';
 import {
   FlingGestureHandler,
@@ -17,10 +17,10 @@ export default function App() {
     (async() => {
       let {status}= await Location.requestPermissionsAsync();
       if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+        setErrorMsg(() => 'Permission to access location was denied');
       }
       let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      setLocation(() => location);
     })();
     getRestaurantData();
   }, [])
@@ -28,17 +28,20 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>{JSON.stringify(location)}</Text>
+      {/* <Text>{JSON.stringify(location)}</Text> */}
       <FlingGestureHandler
-          direction={Directions.RIGHT | Directions.LEFT}
-          onHandlerStateChange={({ nativeEvent }) => {
-            if (nativeEvent.state === State.ACTIVE) {
-              Alert.alert("I'm flinged!");
-            }
-          }}>
-          <Card/>
+        direction={Directions.RIGHT}
+        onHandlerStateChange={({ nativeEvent }) => {
+          console.log('test')
+          if (nativeEvent.state === State.ACTIVE) {
+            Alert.alert("I'm flinged!");
+          }
+        }}>
+        <View>
+          <Card />
+          </View>
       </FlingGestureHandler>
-      {/*<RestaurantView />*/}
+      {/* <RestaurantView /> */}
       <StatusBar style="auto" />
     </View>
   );
@@ -53,7 +56,7 @@ async function getRestaurantData(location) {
   const res = await fetch('https://maps.googleapis.com/maps/api/place/findplacefromtext/json?' + searchParams.toString());
 
 
-  console.log(res)
+  // console.log(JSON.stringify(res))
 }
 
 const styles = StyleSheet.create({
