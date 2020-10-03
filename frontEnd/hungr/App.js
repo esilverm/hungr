@@ -28,6 +28,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Text>{errorMsg}</Text>
       {/* <Text>{JSON.stringify(location)}</Text> */}
       <FlingGestureHandler
         direction={Directions.RIGHT}
