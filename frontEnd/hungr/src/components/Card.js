@@ -1,13 +1,12 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { isRequired } from 'react-native/Libraries/DeprecatedPropTypes/DeprecatedColorPropType';
 
-const RestaurantView = () => {
-  return (
-    <View>
-      <View style={styles.Map}>
-        <Image source = {require("./assets/map.png")} style={styles.Image}/>
-      </View>
+class Card extends Component {
+  render(){
+    return(
+    <View style={styles.Card}>
+      <Image source = {require("../../assets/chipotle.jpg")} style={styles.Image}/>
       <View style={styles.Text}>
         <View style={styles.Location}>
           <Text style={styles.Name}> 
@@ -23,7 +22,8 @@ const RestaurantView = () => {
         </Text>
       </View>
     </View>
-  )
+    )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -33,23 +33,7 @@ const styles = StyleSheet.create({
     backgroundColor: "lightblue",
     display: "flex",
     borderRadius: 10,
-    overflow: "hidden",
-    shadowColor: "#000",
-    shadowOffset: {
-	    width: 0,
-	    height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  Map: {
-    width: 300,
-    height: 300,
-    backgroundColor: "lightblue",
-    display: "flex",
-    borderRadius: 10,
-    overflow: "hidden",
+    // overflow: "hidden",
     shadowColor: "#000",
     shadowOffset: {
 	    width: 0,
@@ -86,5 +70,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default RestaurantView;
-
+export default Card;
