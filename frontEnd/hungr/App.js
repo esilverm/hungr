@@ -28,13 +28,14 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>{JSON.stringify(location)}</Text>
+      <Text>{errorMsg}</Text>
       <FlingGestureHandler
           direction={Directions.RIGHT | Directions.LEFT}
           onHandlerStateChange={({ nativeEvent }) => {
-            if (nativeEvent.state === State.ACTIVE) {
+            //if (nativeEvent.state === State.ACTIVE) {
+	      setErrorMsg("Swipey thing doesn't work");
               Alert.alert("I'm flinged!");
-            }
+            //}
           }}>
           <Card/>
       </FlingGestureHandler>
@@ -53,7 +54,7 @@ async function getRestaurantData(location) {
   const res = await fetch('https://maps.googleapis.com/maps/api/place/findplacefromtext/json?' + searchParams.toString());
 
 
-  console.log(res)
+  console.log(JSON.stringify(res));
 }
 
 const styles = StyleSheet.create({
